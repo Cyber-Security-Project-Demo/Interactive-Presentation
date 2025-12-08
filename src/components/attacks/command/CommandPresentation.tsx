@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface CommandPresentationProps {
@@ -177,23 +177,74 @@ const CommandInjectionPresentation: React.FC<CommandPresentationProps> = ({ onBa
     }
   };
 
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const width = rect.width;
+
+    if (x < width / 2) {
+      prevSlide();
+    } else {
+      nextSlide();
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'ArrowRight') nextSlide();
+      if (e.key === 'Escape') onBack();
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [onBack]);
+
   return (
-    <div className="h-screen bg-gradient-to-br from-blue-100 via-blue-50 to-white p-4 flex flex-col">
-      <div className="max-w-5xl mx-auto flex-1 flex flex-col justify-center items-center">
-        <button
-          onClick={onBack}
-          className="absolute top-8 left-8 px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition text-sm"
-        >
-          ← Back
-        </button>
-        
+    <div
+      className="h-screen bg-gradient-to-br from-blue-100 via-blue-50 to-white p-4 cursor-pointer flex flex-col"
+      onClick={handleClick}
+    >
+      <div className="max-w-5xl mx-auto flex-1 flex flex-col">
+        <div className="text-center mb-4 relative">
+          <button
+            onClick={(e) => { e.stopPropagation(); onBack() }}
+            className="absolute top-0 left-0 px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition text-sm"
+          >
+            ← Back
+          </button>
+          <h1 className="text-3xl font-bold text-blue-800 mb-1">Command Injection</h1>
+          <p className="text-lg text-blue-600">Understand command injection and how to prevent it</p>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-2xl p-6 flex-1 flex flex-col overflow-hidden">
+          <h2 className="text-2xl font-bold text-blue-700 mb-4 pb-2 border-b-4 border-blue-300">
+            {slides[currentSlide].title}
+          </h2>
+          <div className="text-base flex-1 overflow-y-auto">
+            {slides[currentSlide].content}
+          </div>
+        </div>
+
+        <div className="flex justify-center gap-2 my-3">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={(e) => { e.stopPropagation(); setCurrentSlide(index) }}
+              className={`w-2 h-2 rounded-full transition ${
+                index === currentSlide ? 'bg-blue-600 w-6' : 'bg-blue-300'
+              }`}
+            />
+          ))}
+        </div>
+
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-blue-800 mb-4">Command Injection Presentation</h1>
-          <p className="text-xl text-blue-600 mb-8">Coming Soon...</p>
-          <div className="text-6xl mb-4">⚡</div>
-          <p className="text-lg text-gray-600">
-            This presentation will be implemented by another team member.
-          </p>
+          <div className="text-blue-600 font-semibold text-sm">
+            Slide {currentSlide + 1} of {slides.length}
+          </div>
+          <div className="text-blue-500 text-xs mt-1">
+            Click left/right side or use arrow keys
+          </div>
         </div>
       </div>
     </div>
