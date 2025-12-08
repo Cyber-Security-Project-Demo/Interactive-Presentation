@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const CommandInjectionPresentation = () => {
+interface CommandPresentationProps {
+  onBack: () => void
+}
+
+const CommandInjectionPresentation: React.FC<CommandPresentationProps> = ({ onBack }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
