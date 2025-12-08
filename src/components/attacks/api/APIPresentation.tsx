@@ -23,65 +23,98 @@ const APIPresentation: React.FC<APIPresentationProps> = ({ onBack }) => {
       title: "What is an API?",
       content: (
         <div className="space-y-6">
-          <p className="text-xl text-gray-700">
+          <p className="text-xl text-gray-700 text-center">
             <span className="font-bold text-blue-600">API</span> stands for <span className="font-bold">Application Programming Interface</span>
           </p>
           
-          <div className="bg-white border-4 border-blue-400 rounded-lg p-6 shadow-lg">
-            <h3 className="text-2xl font-semibold text-gray-800 mb-3">Think of an API as a Waiter in a Restaurant</h3>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              When you go to a restaurant, you don't go directly to the kitchen. Instead, you tell the <strong>waiter</strong> what you want, 
-              and the waiter brings your order from the kitchen. An API works the same way for websites and apps!
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-3 border-blue-300 rounded-lg p-6 shadow-lg">
+            <h3 className="text-2xl font-semibold text-gray-800 mb-3 text-center">Think of an API as a Waiter in a Restaurant 🍽️</h3>
+            <p className="text-lg text-gray-700 text-center mb-6">
+              When you order food, you don't go to the kitchen. The <strong>waiter</strong> takes your order and brings back your food!
             </p>
+
+            {/* Visual Flow Diagram */}
+            <div className="flex flex-col items-center space-y-4 my-6">
+              {/* Step 1: You */}
+              <div className="bg-green-500 text-white px-8 py-4 rounded-lg shadow-lg text-center w-72">
+                <div className="text-4xl mb-2">👤</div>
+                <p className="text-xl font-bold">You (Customer)</p>
+                <p className="text-sm mt-2">"I want pasta, please!"</p>
+              </div>
+
+              {/* Arrow */}
+              <div className="flex flex-col items-center">
+                <div className="w-1 h-12 bg-blue-400"></div>
+                <div className="w-0 h-0 border-l-8 border-r-8 border-t-12 border-l-transparent border-r-transparent border-t-blue-400"></div>
+              </div>
+
+              {/* Step 2: Waiter/API */}
+              <div className="bg-yellow-500 text-white px-8 py-6 rounded-lg shadow-lg text-center w-80 border-4 border-yellow-600">
+                <div className="text-4xl mb-2">🍽️</div>
+                <p className="text-xl font-bold">Waiter = API</p>
+                <p className="text-sm mt-2">Takes your order to the kitchen</p>
+                <p className="text-xs mt-1 bg-yellow-600 px-2 py-1 rounded">Carries messages safely</p>
+              </div>
+
+              {/* Arrow */}
+              <div className="flex flex-col items-center">
+                <div className="w-1 h-12 bg-blue-400"></div>
+                <div className="w-0 h-0 border-l-8 border-r-8 border-t-12 border-l-transparent border-r-transparent border-t-blue-400"></div>
+              </div>
+
+              {/* Step 3: Kitchen/Server */}
+              <div className="bg-red-500 text-white px-8 py-4 rounded-lg shadow-lg text-center w-72">
+                <div className="text-4xl mb-2">👨‍🍳</div>
+                <p className="text-xl font-bold">Kitchen (Server)</p>
+                <p className="text-sm mt-2">Cooks your pasta!</p>
+              </div>
+
+              {/* Arrow Return */}
+              <div className="flex flex-col items-center">
+                <div className="w-1 h-12 bg-green-400"></div>
+                <div className="w-0 h-0 border-l-8 border-r-8 border-t-12 border-l-transparent border-r-transparent border-t-green-400"></div>
+              </div>
+
+              {/* Step 4: Return to You */}
+              <div className="bg-green-500 text-white px-8 py-4 rounded-lg shadow-lg text-center w-72">
+                <div className="text-4xl mb-2">🍝</div>
+                <p className="text-xl font-bold">You Get Your Food!</p>
+                <p className="text-sm mt-2">Waiter brings it back</p>
+              </div>
+            </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
-            <div className="bg-green-100 p-6 rounded-lg text-center border-3 border-green-400">
-              <div className="text-4xl mb-3">👤</div>
-              <h4 className="font-bold text-gray-800 mb-2">You (User)</h4>
-              <p className="text-sm text-gray-600">Want to check your bank balance</p>
-            </div>
-            
-            <div className="bg-yellow-100 p-6 rounded-lg text-center border-3 border-yellow-400">
-              <div className="text-4xl mb-3">🔄</div>
-              <h4 className="font-bold text-gray-800 mb-2">API (Waiter)</h4>
-              <p className="text-sm text-gray-600">Carries your request safely</p>
-            </div>
-            
-            <div className="bg-blue-100 p-6 rounded-lg text-center border-3 border-blue-400">
-              <div className="text-4xl mb-3">🏦</div>
-              <h4 className="font-bold text-gray-800 mb-2">Bank Server</h4>
-              <p className="text-sm text-gray-600">Sends back your balance</p>
-            </div>
-          </div>
-
-          <div className="bg-white border-4 border-purple-400 rounded-lg p-6 shadow-lg">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">How Does an API Work?</h3>
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <span className="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">1</span>
-                <p className="text-gray-700"><strong>You make a request:</strong> "Show me my bank balance"</p>
+          <div className="bg-blue-50 border-3 border-blue-400 rounded-lg p-6 shadow-lg">
+            <h3 className="text-xl font-semibold text-gray-800 mb-3 text-center">How This Works for Websites 💻</h3>
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <div className="bg-green-100 p-4 rounded-lg border-2 border-green-400">
+                  <div className="text-3xl mb-2">👤</div>
+                  <p className="font-bold text-gray-800">You</p>
+                  <p className="text-xs text-gray-600">"Show my bank balance"</p>
+                </div>
               </div>
-              <div className="flex items-start gap-3">
-                <span className="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">2</span>
-                <p className="text-gray-700"><strong>API carries the request</strong> to the bank's computer (server)</p>
+              <div>
+                <div className="bg-yellow-100 p-4 rounded-lg border-2 border-yellow-400">
+                  <div className="text-3xl mb-2">🔄</div>
+                  <p className="font-bold text-gray-800">API</p>
+                  <p className="text-xs text-gray-600">Carries request</p>
+                </div>
               </div>
-              <div className="flex items-start gap-3">
-                <span className="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">3</span>
-                <p className="text-gray-700"><strong>Bank processes</strong> your request and checks your balance</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">4</span>
-                <p className="text-gray-700"><strong>API brings back the answer:</strong> "Your balance is $1,000"</p>
+              <div>
+                <div className="bg-blue-100 p-4 rounded-lg border-2 border-blue-400">
+                  <div className="text-3xl mb-2">🏦</div>
+                  <p className="font-bold text-gray-800">Bank</p>
+                  <p className="text-xs text-gray-600">Sends: "$1,000"</p>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-red-50 border-3 border-red-400 rounded-lg p-6">
-            <p className="text-lg font-bold text-red-700 mb-2">⚠️ Why This Matters for Security</p>
-            <p className="text-gray-700">
-              If hackers can trick or intercept the API (the waiter), they can steal your information or make unauthorized requests 
-              on your behalf—like transferring your money without your permission!
+          <div className="bg-red-50 border-3 border-red-400 rounded-lg p-4">
+            <p className="text-lg font-bold text-red-700 mb-2 text-center">⚠️ Why This Matters for Security</p>
+            <p className="text-gray-700 text-center">
+              If hackers can trick the API (the waiter), they can steal your information or make unauthorized requests—like transferring your money without permission!
             </p>
           </div>
         </div>

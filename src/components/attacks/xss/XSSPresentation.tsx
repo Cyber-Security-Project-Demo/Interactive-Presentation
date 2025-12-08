@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { ChevronLeft, ChevronRight, Shield, AlertTriangle, Lock } from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import { Shield, AlertTriangle, Lock } from 'lucide-react'
 
 interface XSSPresentationProps { onBack?: () => void }
 
@@ -245,8 +245,45 @@ const XSSPresentation: React.FC<XSSPresentationProps> = ({ onBack }) => {
     }
   ]
 
-  const nextSlide = () => setCurrentSlide((prev: number) => (prev + 1) % slides.length)
-  const prevSlide = () => setCurrentSlide((prev: number) => (prev - 1 + slides.length) % slides.length)
+  const nextSlide = () => {
+    if (currentSlide < slides.length - 1) {
+      setCurrentSlide((prev) => prev + 1)
+    }
+  }
+
+  const prevSlide = () => {
+    if (currentSlide > 0) {
+      setCurrentSlide((prev) => prev - 1)
+    }
+  }
+
+  // Handle click navigation on slide content
+  const handleSlideClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const slideElement = e.currentTarget
+    const clickX = e.clientX - slideElement.getBoundingClientRect().left
+    const slideWidth = slideElement.offsetWidth
+    
+    // Left half goes back, right half goes forward
+    if (clickX < slideWidth / 2) {
+      prevSlide()
+    } else {
+      nextSlide()
+    }
+  }
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        nextSlide()
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        prevSlide()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [currentSlide])
 
   return (
     <div className="w-full h-screen bg-gradient-to-br from-gray-100 to-gray-200 flex flex-col">
@@ -265,20 +302,11 @@ const XSSPresentation: React.FC<XSSPresentationProps> = ({ onBack }) => {
             <p className="text-blue-100 mt-1">{slides[currentSlide].subtitle}</p>
           </div>
 
-          <div className="flex-1 p-8 overflow-auto">
+          <div className="flex-1 p-8 overflow-auto cursor-pointer" onClick={handleSlideClick}>
             {slides[currentSlide].content}
           </div>
 
-          <div className="border-t bg-gray-50 p-4 flex items-center justify-between">
-            <button
-              onClick={prevSlide}
-              className="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={currentSlide === 0}
-            >
-              <ChevronLeft className="w-5 h-5" />
-              <span>Previous</span>
-            </button>
-
+          <div className="border-t bg-gray-50 p-4 flex items-center justify-center">
             <div className="flex space-x-2">
               {slides.map((_, index) => (
                 <button
@@ -288,15 +316,6 @@ const XSSPresentation: React.FC<XSSPresentationProps> = ({ onBack }) => {
                 />
               ))}
             </div>
-
-            <button
-              onClick={nextSlide}
-              className="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={currentSlide === slides.length - 1}
-            >
-              <span>Next</span>
-              <ChevronRight className="w-5 h-5" />
-            </button>
           </div>
         </div>
       </div>

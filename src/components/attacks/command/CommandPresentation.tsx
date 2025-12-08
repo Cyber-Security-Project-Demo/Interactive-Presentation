@@ -20,7 +20,7 @@ const CommandPresentation: React.FC<CommandPresentationProps> = ({ onBack }) => 
           <p className="text-xl text-blue-600 mb-8">Coming Soon...</p>
           <div className="text-6xl mb-4">⚡</div>
           <p className="text-lg text-gray-600">
-            This presentation will be implemented by another team member.
+            This presentation will be implemented by Sandaru Lakmika
           </p>
         </div>
       </div>
